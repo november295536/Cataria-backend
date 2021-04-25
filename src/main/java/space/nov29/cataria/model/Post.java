@@ -1,6 +1,7 @@
 package space.nov29.cataria.model;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table
@@ -11,10 +12,10 @@ public class Post {
     private Long id;
 
     @Column(nullable = false, updatable = false)
-    private Long createTime;
+    private Instant createTime;
 
     @Column(nullable = false)
-    private Long lastEditTime;
+    private Instant lastEditTime;
 
     @Column(nullable = false)
     private String title;
@@ -45,28 +46,29 @@ public class Post {
         this.published = published;
     }
 
-    public Long getCreateTime() {
+    public Instant getCreateTime() {
         return createTime;
     }
-    public void setCreateTime(Long createTime) {
+
+    public void setCreateTime(Instant createTime) {
         this.createTime = createTime;
     }
 
-    public Long getLastEditTime() {
+    public Instant getLastEditTime() {
         return lastEditTime;
     }
 
-    public void setLastEditTime(Long lastEditTime) {
+    public void setLastEditTime(Instant lastEditTime) {
         this.lastEditTime = lastEditTime;
     }
 
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public String getSlug() {
         return slug;
