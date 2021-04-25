@@ -23,7 +23,7 @@ public class PostController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/getAll")
     public ResponseEntity<List<PostDto>> showAllPost() {
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
