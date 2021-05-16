@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import space.nov29.cataria.dto.LoginRequest;
 import space.nov29.cataria.dto.RegisterRequest;
 import space.nov29.cataria.service.AuthService;
+import space.nov29.cataria.dto.AuthenticationResponse;
+
+import java.time.Instant;
 
 @RestController
 @Slf4j
@@ -23,8 +26,8 @@ public class AuthController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/editorLogin")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    @PostMapping("/login")
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
 }
