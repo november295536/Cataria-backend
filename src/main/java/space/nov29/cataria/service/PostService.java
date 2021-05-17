@@ -2,6 +2,9 @@ package space.nov29.cataria.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,6 @@ import java.security.Principal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,39 +51,33 @@ public class PostService {
     }
 
     public PostDto getPost(String slug) throws PostNotFoundException {
-        Post post = postRepository
-                .findBySlug(slug)
-                .orElse(
-                        postRepository
-                                .findById(Long.parseLong(slug))
-                                .orElseThrow(() -> new PostNotFoundException("slug: " + slug)));
-        if (post.getPublished()) return mapFromPostToDto(post);
-
-        Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        if (!(principal instanceof UsernamePasswordAuthenticationToken))
+        try {
+            Post post = postRepository
+                    .findBySlug(slug)
+                    .orElse(null);
+            if(post == null) post = postRepository
+                    .findById(Long.parseLong(slug))
+                    .orElseThrow(() -> new PostNotFoundException("slug: " + slug));
+            if (post.getPublished()) return new PostDto(post);
+            if(!isLogin()) throw new PostNotFoundException("slug: " + slug);
+            return new PostDto(post);
+        } catch (NumberFormatException e) {
             throw new PostNotFoundException("slug: " + slug);
-        return mapFromPostToDto(post);
+        }
     }
 
     public List<PostDto> getAllPosts() {
         List<Post> posts = postRepository.findAll();
-        return posts.stream().map(this::mapFromPostToDto).collect(Collectors.toList());
+        return posts.stream().map(PostDto::new).collect(Collectors.toList());
     }
 
-    private PostDto mapFromPostToDto(Post post) {
-        PostDto dto = new PostDto();
-        dto.setId(post.getId());
-        dto.setTitle(post.getTitle());
-        String slug = post.getSlug();
-        // 這邊會造成在update的時候若沒有指定 slug ，就會把 id 當成 slug 寫入 database
-        dto.setSlug(Objects.requireNonNullElseGet(slug, () -> Long.toString(post.getId())));
-        dto.setContent(post.getContent());
-        dto.setLastEditTime(post.getLastEditTime());
-        dto.setCreateTime(post.getCreateTime());
-        dto.setPublishedTime(post.getPublishedTime());
-        dto.setPublished(post.getPublished());
+    public Page<Post> getPostsWithPagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        if(!isLogin()) {
+            return postRepository.findByPublishedTrueOrderByPublishedTimeDesc(pageable);
+        }
+        return postRepository.findAll(pageable);
 
-        return dto;
     }
 
     private Post createPostFromPostDta(PostDto postDto) {
@@ -154,5 +150,10 @@ public class PostService {
         List<String> tagNames = postDto.getTags();
         Set<Tag> tags = getTagsFromTagNameList(tagNames);
         post.setTags(tags);
+    }
+
+    private boolean isLogin() {
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        return principal instanceof UsernamePasswordAuthenticationToken;
     }
 }
