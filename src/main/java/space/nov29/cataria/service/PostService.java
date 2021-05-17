@@ -10,8 +10,8 @@ import space.nov29.cataria.exception.PostNotFoundException;
 import space.nov29.cataria.model.Category;
 import space.nov29.cataria.model.Post;
 import space.nov29.cataria.model.Tag;
-import space.nov29.cataria.repository.CategoryRespository;
-import space.nov29.cataria.repository.PostRespository;
+import space.nov29.cataria.repository.CategoryRepository;
+import space.nov29.cataria.repository.PostRepository;
 
 import java.security.Principal;
 import java.time.Instant;

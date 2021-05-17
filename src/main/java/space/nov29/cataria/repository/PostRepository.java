@@ -7,6 +7,6 @@ import space.nov29.cataria.model.Post;
 import java.util.Optional;
 
 @Repository
-public interface PostRespository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findBySlug(String slug);
 }
