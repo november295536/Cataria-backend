@@ -1,11 +1,9 @@
 package space.nov29.cataria.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,15 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import space.nov29.cataria.filter.JwtAuthenticationFilter;
 import space.nov29.cataria.service.AuthEntryPointJwt;
 import space.nov29.cataria.service.UserDetailsServiceImpl;
-
-import javax.persistence.Id;
 
 @Configuration
 @EnableWebSecurity
@@ -68,17 +63,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.authenticationProvider(daoAuthenthicationProvider());
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
 
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(daoAuthenthicationProvider());
+//        auth.authenticationProvider(daoAuthenticationProvider());
 //    }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenthicationProvider() {
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider impl = new DaoAuthenticationProvider();
         impl.setUserDetailsService(userDetailsService);
         impl.setPasswordEncoder(passwordEncoder());
