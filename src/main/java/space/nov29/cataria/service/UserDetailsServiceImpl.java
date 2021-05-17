@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                geAuthorities("ROLE_USER"));
+                geAuthorities("ROLE_ADMIN"));
     }
 
     private Collection<? extends GrantedAuthority> geAuthorities(String role_user) {
