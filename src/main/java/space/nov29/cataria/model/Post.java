@@ -1,14 +1,12 @@
 package space.nov29.cataria.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Set;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table
 public class Post {
