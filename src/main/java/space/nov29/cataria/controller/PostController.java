@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import space.nov29.cataria.dto.PostDto;
+import space.nov29.cataria.exception.PostNotFoundException;
 import space.nov29.cataria.model.Post;
 import space.nov29.cataria.service.PostService;
 
@@ -16,12 +17,6 @@ public class PostController {
 
     @Autowired
     private PostService postService;
-
-    @PostMapping("/create")
-    public ResponseEntity createPost(@RequestBody PostDto postDto) {
-        postService.createPost(postDto);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<PostDto>> showAllPost() {
@@ -36,7 +31,11 @@ public class PostController {
 
     @GetMapping("/get/{slug}")
     public ResponseEntity<PostDto> getPost(@PathVariable @RequestBody String slug){
-        return new ResponseEntity<>(postService.getPost(slug), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(postService.getPost(slug), HttpStatus.OK);
+        } catch (PostNotFoundException e) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
