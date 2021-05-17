@@ -1,7 +1,13 @@
 package space.nov29.cataria.dto;
 
-import java.time.Instant;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.Instant;
+import java.util.List;
+
+@Setter
+@Getter
 public class PostDto {
     private Long id;
     private String title;
@@ -9,52 +15,8 @@ public class PostDto {
     private String content;
     private Boolean published;
     private Instant lastEditTime;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Boolean getPublished() {
-        return published;
-    }
-
-    public void setPublished(Boolean published) {
-        this.published = published;
-    }
-
-    public Instant getLastEditTime() {
-        return lastEditTime;
-    }
-
-    public void setLastEditTime(Instant lastEditTime) {
-        this.lastEditTime = lastEditTime;
-    }
+    private Instant createTime;
+    private Instant publishedTime;
+    private String category;
+    private List<String> tags;
 }
