@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import space.nov29.cataria.dto.CategoryDto;
 import space.nov29.cataria.dto.PostDto;
+import space.nov29.cataria.dto.TagDto;
 import space.nov29.cataria.exception.PostNotFoundException;
 import space.nov29.cataria.model.Category;
 import space.nov29.cataria.model.Post;
@@ -50,6 +52,13 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public void deletePost(Long id) {
+        Post post = postRepository
+                .findById(id)
+                .orElseThrow(() -> new PostNotFoundException("id: " + id));
+        postRepository.delete(post);
+    }
+
     public PostDto getPost(String slug) throws PostNotFoundException {
         try {
             Post post = postRepository
@@ -80,6 +89,16 @@ public class PostService {
 
     }
 
+    public List<TagDto> getAllTags() {
+        List<Tag> tags = tagRepository.findAll();
+        return tags.stream().map(TagDto::new).collect(Collectors.toList());
+    }
+
+    public List<CategoryDto> getAllCategory() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(CategoryDto::new).collect(Collectors.toList());
+    }
+
     private Post createPostFromPostDta(PostDto postDto) {
         Post post = new Post();
         post.setTitle(postDto.getTitle());
@@ -106,18 +125,6 @@ public class PostService {
             post.setPublishedTime(currentTime);
         }
         post.setPublished(postDto.getPublished());
-    }
-
-    private Set<Tag> getTagsFromTagNameList(List<String> tagNames) {
-        if(tagNames == null || tagNames.size() == 0) return null;
-        Set<Tag> tags = new HashSet<>();
-        for (String tagName : tagNames) {
-            Tag tag = tagRepository.findByName(tagName)
-                    .orElse(new Tag());
-            tag.setName(tagName);
-            tags.add(tag);
-        }
-        return tags;
     }
 
     private void setTime(PostDto postDto, Post post) {
@@ -150,6 +157,18 @@ public class PostService {
         List<String> tagNames = postDto.getTags();
         Set<Tag> tags = getTagsFromTagNameList(tagNames);
         post.setTags(tags);
+    }
+
+    private Set<Tag> getTagsFromTagNameList(List<String> tagNames) {
+        if(tagNames == null || tagNames.size() == 0) return null;
+        Set<Tag> tags = new HashSet<>();
+        for (String tagName : tagNames) {
+            Tag tag = tagRepository.findByName(tagName)
+                    .orElse(new Tag());
+            tag.setName(tagName);
+            tags.add(tag);
+        }
+        return tags;
     }
 
     private boolean isLogin() {
