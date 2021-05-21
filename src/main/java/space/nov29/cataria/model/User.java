@@ -1,12 +1,10 @@
 package space.nov29.cataria.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table
 public class User {

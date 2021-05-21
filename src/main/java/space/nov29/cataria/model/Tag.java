@@ -1,5 +1,6 @@
 package space.nov29.cataria.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 @Table
 @Setter
 @Getter
+@EqualsAndHashCode(exclude = "posts")
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

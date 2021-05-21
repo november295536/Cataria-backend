@@ -1,7 +1,6 @@
 package space.nov29.cataria.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import space.nov29.cataria.model.Post;
 import space.nov29.cataria.model.Tag;
 
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@NoArgsConstructor
 public class TagDto {
     private Long id;
     private String name;

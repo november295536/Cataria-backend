@@ -1,6 +1,6 @@
 package space.nov29.cataria.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;

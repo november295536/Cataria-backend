@@ -1,7 +1,6 @@
 package space.nov29.cataria.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import space.nov29.cataria.model.Post;
 
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@NoArgsConstructor
 public class PostListResponse {
     private List<PostDto> posts;
     private int currentPage;
