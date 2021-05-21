@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -81,10 +82,11 @@ public class PostService {
     }
 
     public Page<Post> getPostsWithPagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
         if(!isLogin()) {
+            Pageable pageable = PageRequest.of(page, size);
             return postRepository.findByPublishedTrueOrderByPublishedTimeDesc(pageable);
         }
+        Pageable pageable = PageRequest.of(page, size, Sort.by("published").ascending().and(Sort.by("publishedTime").descending()));
         return postRepository.findAll(pageable);
 
     }
