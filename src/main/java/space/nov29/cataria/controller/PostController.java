@@ -12,7 +12,7 @@ import space.nov29.cataria.model.Post;
 import space.nov29.cataria.service.PostService;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/posts")
 public class PostController {
 
     @Autowired
