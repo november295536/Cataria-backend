@@ -2,13 +2,12 @@ package space.nov29.cataria.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import space.nov29.cataria.dto.CategoryDto;
-import space.nov29.cataria.dto.DeletePostRequest;
-import space.nov29.cataria.dto.PostDto;
-import space.nov29.cataria.dto.TagDto;
+import space.nov29.cataria.dto.*;
+import space.nov29.cataria.model.Post;
 import space.nov29.cataria.service.PostService;
 
 import java.util.List;
@@ -22,8 +21,12 @@ public class AdminController {
     private PostService postService;
 
     @GetMapping("/post/getAll")
-    public ResponseEntity<List<PostDto>> showAllPost() {
-        return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+    public PostListResponse showAllPost(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        Page<Post> posts = postService.getAllPosts(page, size);
+        return new PostListResponse(posts);
     }
 
     @PostMapping("/post/create")

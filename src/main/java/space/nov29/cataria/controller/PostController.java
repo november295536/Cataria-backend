@@ -23,7 +23,7 @@ public class PostController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ) {
-        Page<Post> posts = postService.getPostsWithPagination(page, size);
+        Page<Post> posts = postService.getPublishedPost(page, size);
         return new PostListResponse(posts);
     }
 

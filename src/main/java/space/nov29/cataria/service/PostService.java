@@ -76,19 +76,14 @@ public class PostService {
         }
     }
 
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(PostDto::new).collect(Collectors.toList());
-    }
-
-    public Page<Post> getPostsWithPagination(int page, int size) {
-        if(!isLogin()) {
-            Pageable pageable = PageRequest.of(page, size);
-            return postRepository.findByPublishedTrueOrderByPublishedTimeDesc(pageable);
-        }
+    public Page<Post> getAllPosts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("published").ascending().and(Sort.by("publishedTime").descending()));
         return postRepository.findAll(pageable);
+    }
 
+    public Page<Post> getPublishedPost(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findByPublishedTrueOrderByPublishedTimeDesc(pageable);
     }
 
     public List<TagDto> getAllTags() {
