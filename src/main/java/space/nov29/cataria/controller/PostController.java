@@ -30,8 +30,22 @@ public class PostController {
     @GetMapping("/{slug}")
     public ResponseEntity<PostDto> getPost(@PathVariable @RequestBody String slug){
         try {
-            return new ResponseEntity<>(postService.getPost(slug), HttpStatus.OK);
+            return new ResponseEntity<>(postService.getSinglePost(slug), HttpStatus.OK);
         } catch (PostNotFoundException e) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/category/{categoryName}")
+    public ResponseEntity<PostListResponse> getPostByCategory(
+            @PathVariable @RequestBody String categoryName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        try {
+            Page<Post> posts = postService.getCategoryPosts(categoryName, page, size);
+            return new ResponseEntity<>(new PostListResponse(posts), HttpStatus.OK);
+        }
+        catch (PostNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }

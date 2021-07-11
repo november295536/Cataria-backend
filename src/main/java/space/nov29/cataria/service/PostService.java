@@ -60,7 +60,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public PostDto getPost(String slug) throws PostNotFoundException {
+    public PostDto getSinglePost(String slug) throws PostNotFoundException {
         try {
             Post post = postRepository
                     .findBySlug(slug)
@@ -74,6 +74,15 @@ public class PostService {
         } catch (NumberFormatException e) {
             throw new PostNotFoundException("slug: " + slug);
         }
+    }
+
+    public Page<Post> getCategoryPosts(String categoryName, int page, int size) throws PostNotFoundException {
+        Category category = categoryRepository
+                .findByName(categoryName)
+                .orElseThrow(() -> new PostNotFoundException("category: " + categoryName));
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findByCategoryAndPublishedTrue(category, pageable);
+
     }
 
     public Page<Post> getAllPosts(int page, int size) {
