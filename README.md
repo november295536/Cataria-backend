@@ -6,6 +6,11 @@
 
 之所以會想做成教學的專案，主要原因是我週遭好多人想要轉行當軟體工程師，雖然我不能算一個很厲害的工程師，但我也希望自己有能力可以幫助他們，可以說第三個目標才是激發我寫這個專案的契機，其他目標都是後來才慢慢浮現出來的。
 
+## 版本控制
+版本控制使用 Git + Github，沒有什麼特別的，主要講一下開發管理的策略。本專案主要分成兩個 branch 來進行維護，開發中以及最新的功能會放在 master branch 中，線上運行的則是 production branch 版本。因為目前為止沒有多人協作的問題，而且一次通常只專注於一件事情(一個新功能或重構)，所以開發工作會直接在 master 上進行，除非是有比較大的一個功能才會拆分出其他的分支。 
+
+如果想看當前 production 分支運行的成果，可以直接參考我的部落格 https://blog.nov29.one 
+
 ## 後端 TODO
 - [ ] 串接 AWS S3 作為圖片服務器。
 
@@ -18,6 +23,8 @@
   第三個方案是使用外部的儲存資源，當今網路服務時常會串接第三方服務這點來看，串接 AWS S3 可以是一個不錯的練習機會。考量到這個專案的教學目的，我決定串接外部服務當成圖片服務的實現方案。
 
 - [ ] 實作文章分類列表(category、tag)相關的資料 API
+- [ ] 重構管理員註冊及使用者管理模塊
+- [ ] 輸入檢查
 
 ## 目錄結構
 使用 Java Spring Boot 並不像前端使用 Nuxt 一樣有一個規範好的目錄結構，基本上都是自己來。
@@ -53,28 +60,28 @@ category(資源)
 ### 普通用戶(未登入)
 | method |              path              |      description                | 實現 |
 | :----: | :----------------------------: | :-----------------------------: | :--: |
-| GET    | /posts                         | 取得所有文章(含分頁功能)          | ✅  |
-| GET    | /posts/category/{categoryName} | 取得分類目錄下所有文章(含分頁功能) | ❌  |
-| GET    | /posts/tags/{tagName}          | 取得分類標籤下所有文章(含分頁功能) | ❌  |
-| GET    | /posts/{id or slug}            | 透過文章 id 或 slug 取得指定文章  | ✅  |
-| GET    | /pageInfo                      | 取得可顯示的 category 和 tag 列表 | ❌  |
+| GET    | /posts                         | 取得所有文章(含分頁功能)            | ✅  |
+| GET    | /posts/category/{categoryName} | 取得分類目錄下所有文章(含分頁功能)    | ✅  |
+| GET    | /posts/tags/{tagName}          | 取得分類標籤下所有文章(含分頁功能)    | ❌  |
+| GET    | /posts/{id or slug}            | 透過文章 id 或 slug 取得指定文章    | ✅  |
+| GET    | /pageInfo                      | 取得 category 和 tag 列表         | ❌  |
 
 ### 帳號管理
 | method |              path              |      description                | 實現 |
 | :----: | :----------------------------: | :-----------------------------: | :--: |
-| POST   | /auth/login                    | 獲取登入 token                   | ✅  |
-| POST   | /auth/signup                   | 註冊管理員帳號(暫時關閉)          | ✅  |
+| POST   | /auth/login                    | 獲取登入 token                    | ✅  |
+| POST   | /auth/signup                   | 註冊管理員帳號(暫時關閉)            | ✅  |
 
 ### 管理員功能
 | method |              path              |      description                | 實現 |
 | :----: | :----------------------------: | :-----------------------------: | :--: |
-| GET    | /admin/posts                   | 取得所有文章(包含未發布文章)       | ✅  |
-| POST   | /admin/post                    | 新增文章                         | ✅  |
-| PUT    | /admin/post                    | 修改文章                         | ✅  |
-| DELETE | /admin/post                    | 刪除文章                         | ✅  |
-| GET    | /admin/images                  | 取得所有圖片                      | ❌  |
-| POST   | /admin/images                  | 新增圖片                         | ❌  |
-| DELETE | /admin/images                  | 刪除圖片                         | ❌  |
+| GET    | /admin/posts                   | 取得所有文章(包含未發布文章)        | ✅  |
+| POST   | /admin/posts                   | 新增文章                         | ✅  |
+| PUT    | /admin/posts                   | 修改文章                         | ✅  |
+| DELETE | /admin/posts                   | 刪除文章                         | ✅  |
+| GET    | /admin/assets                  | 取得所有圖片                      | ❌  |
+| POST   | /admin/assets                  | 新增圖片                         | ❌  |
+| DELETE | /admin/assets                  | 刪除圖片                         | ❌  |
 | GET    | /admin/categories              | 取得所有 category 的狀態          | ❌  |
 | GET    | /admin/tags                    | 取得所有 tag 的狀態               | ❌  |
 

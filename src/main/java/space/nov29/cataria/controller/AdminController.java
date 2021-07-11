@@ -20,7 +20,7 @@ public class AdminController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/post/getAll")
+    @GetMapping("/posts")
     public PostListResponse showAllPost(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
@@ -29,29 +29,29 @@ public class AdminController {
         return new PostListResponse(posts);
     }
 
-    @PostMapping("/post/create")
+    @PostMapping("/posts")
     public ResponseEntity createPost(@RequestBody PostDto postDto) {
         postService.createPost(postDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/post/update")
+    @PutMapping("/posts")
     public ResponseEntity updatePost(@RequestBody PostDto postDto) {
         postService.updatePost(postDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/post/delete")
+    @DeleteMapping("/posts")
     public ResponseEntity deletePost(@RequestBody DeletePostRequest deletePostRequest) {
         postService.deletePost(deletePostRequest.getId());
         return new ResponseEntity(HttpStatus.OK);
     }
-    @GetMapping("/config/tags")
+    @GetMapping("/tags")
     public ResponseEntity<List<TagDto>> getTagList() {
         return new ResponseEntity<>(postService.getAllTags(), HttpStatus.OK);
     }
 
-    @GetMapping("/config/categories")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryDto>> getCategoryList() {
         return new ResponseEntity<>(postService.getAllCategory(), HttpStatus.OK);
     }
