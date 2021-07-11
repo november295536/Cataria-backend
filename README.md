@@ -25,10 +25,60 @@
 - [ ] 實作文章分類列表(category、tag)相關的資料 API
 - [ ] 重構管理員註冊及使用者管理模塊
 - [ ] 輸入檢查
+- [ ] 完善錯誤處理
 
 ## 目錄結構
-使用 Java Spring Boot 並不像前端使用 Nuxt 一樣有一個規範好的目錄結構，基本上都是自己來。
+使用 Java Spring Boot 並不像前端使用 Nuxt 一樣有一個規範好的目錄結構，基本上都是自己來，下面主要解釋 src/main 目錄底下的結構。
+```
+src/main
+├── java.space.nov29.cataria
+│   ├── config
+│   ├── controller
+│   ├── dto
+│   ├── exception
+│   ├── filter
+│   ├── model
+│   ├── repository
+│   └── service
+│   
+└── resources
 
+```
+1. config:
+
+    config 資料夾底下主要放的是有關後端伺服器設定的部份，包含安全設定、CORS 設定等。
+
+2. controller:
+
+    這裡主要放 MVC 架構中的 controller 的部份，透過不同的功能分類來拆分 controller。
+
+3. dto
+
+    DTO 的用途是規範在 class 之間傳遞的物件的格式，一個請求進來，或是從 DB 裡面把資料撈出來之後，應該進行適當的封裝，在組件之間傳遞資料的時候才有標準可以參照。
+
+4. exception
+
+    這邊存放的是自訂的 exception，有這些自訂的 exception 才能更精準的進行調適，出錯的時候也才有跡可循。
+
+5. filter
+   
+   這邊放的是自訂的 filter，作用是在 HTTP 請求到達之可以被一個或是多個的 filter 請求進行預處理，處理內容可能是登入檢查、輸出日誌等功能，這樣可以把程式邏輯拆分的更乾淨，處理請求的 controller 只需要專住在怎麼處理請求的資源即可。
+
+6. model
+   
+   這邊放的是與資料庫交互的 model。ORM 工具的目的在於自動的把位於資料庫的內容和程式之間的物件進行關係映射，這裡規定了他們之間的映射關係。
+
+7. repository
+   
+   在資料存取方面，由於我用的是 Spring Data JPA，這是一個比 Hibernate 這種 ORM 工具更抽象的一層工具，進一步對 DB 的操作進行封裝以簡化開發的繁瑣程度，在這裡我們需要定義需要哪些方法來進行和資料庫的互動。
+
+8. service
+
+    這裡進一步對和資料庫之間的互動進行封裝，controller 只會調用這裡暴露出去的方法。對 controller 來說，它只知道系統內部有哪些資料類型，和有哪些 service 提供了的操作。進一步減少程式之間的耦合。
+
+9. resources
+
+    這裡存放的是一些資源類的文件，像是存儲專案設定的 application.properties 文件。Github 上只提供了一個範本作為參考，使用者在運行專案的時候應該根據自己的環境去撰寫相關的設定。
 ## RESTful API 定義
 決定 API 的時候，我自己的作法是先思考我有哪些資源，並且需要支援那些操作，之後再根據這些資願把功能轉換為一系列的 API endpoint。
 所以首先來看資源列表以及支援的操作:
