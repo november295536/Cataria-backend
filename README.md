@@ -24,6 +24,7 @@
 
 - [ ] 實作文章分類列表(category、tag)相關的資料 API
 - [ ] 重構管理員註冊及使用者管理模塊
+- [ ] jwt token auto renew
 - [ ] 輸入檢查
 - [ ] 完善錯誤處理
 
@@ -128,7 +129,7 @@ category(資源)
 | GET    | /admin/posts                   | 取得所有文章(包含未發布文章)        | ✅  |
 | POST   | /admin/posts                   | 新增文章                         | ✅  |
 | PUT    | /admin/posts                   | 修改文章                         | ✅  |
-| DELETE | /admin/posts                   | 刪除文章                         | ✅  |
+| DELETE | /admin/posts/{id}              | 刪除文章                         | ✅  |
 | GET    | /admin/assets                  | 取得所有圖片                      | ❌  |
 | POST   | /admin/assets                  | 新增圖片                         | ❌  |
 | DELETE | /admin/assets                  | 刪除圖片                         | ❌  |

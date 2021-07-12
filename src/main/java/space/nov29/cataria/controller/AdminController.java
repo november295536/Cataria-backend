@@ -42,8 +42,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/posts")
-    public ResponseEntity deletePost(@RequestBody DeletePostRequest deletePostRequest) {
-        postService.deletePost(deletePostRequest.getId());
+    public ResponseEntity deletePost(@RequestParam long id) {
+        postService.deletePost(id);
         return new ResponseEntity(HttpStatus.OK);
     }
     @GetMapping("/tags")
