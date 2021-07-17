@@ -7,6 +7,7 @@ build/
 
 #personal setting
 application.properties
+credentials
 
 ### STS ###
 .apt_generated
