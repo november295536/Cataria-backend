@@ -129,7 +129,7 @@ category(資源)
 | GET    | /admin/posts                   | 取得所有文章(包含未發布文章)        | ✅  |
 | POST   | /admin/posts                   | 新增文章                         | ✅  |
 | PUT    | /admin/posts                   | 修改文章                         | ✅  |
-| DELETE | /admin/posts/{id}              | 刪除文章                         | ✅  |
+| DELETE | /admin/posts?id={post id}      | 刪除文章                         | ✅  |
 | GET    | /admin/assets                  | 取得所有圖片                      | ❌  |
 | POST   | /admin/assets                  | 新增圖片                         | ❌  |
 | DELETE | /admin/assets                  | 刪除圖片                         | ❌  |
