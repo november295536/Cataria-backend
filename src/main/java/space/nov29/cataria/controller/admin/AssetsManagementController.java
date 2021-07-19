@@ -19,7 +19,7 @@ public class AssetsManagementController {
     private AssetsService assetsService;
 
     @PostMapping("/assets")
-    public ResponseEntity<AssetsUploadResponse> uploadAssets(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity uploadAssets(@RequestParam("file") MultipartFile file) {
         try {
             String filePath = assetsService.put(file);
             AssetsUploadResponse response = new AssetsUploadResponse(filePath);
