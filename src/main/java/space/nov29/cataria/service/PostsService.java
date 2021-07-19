@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class PostService {
+public class PostsService {
 
     @Autowired
     private PostRepository postRepository;

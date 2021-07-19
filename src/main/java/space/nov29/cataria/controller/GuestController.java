@@ -9,28 +9,28 @@ import space.nov29.cataria.dto.PostDto;
 import space.nov29.cataria.dto.PostListResponse;
 import space.nov29.cataria.exception.PostNotFoundException;
 import space.nov29.cataria.model.Post;
-import space.nov29.cataria.service.PostService;
+import space.nov29.cataria.service.PostsService;
 
 @RestController
 @RequestMapping("/posts")
-public class PostController {
+public class GuestController {
 
     @Autowired
-    private PostService postService;
+    private PostsService postsService;
 
     @GetMapping
     public PostListResponse getPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ) {
-        Page<Post> posts = postService.getPublishedPost(page, size);
+        Page<Post> posts = postsService.getPublishedPost(page, size);
         return new PostListResponse(posts);
     }
 
     @GetMapping("/{slug}")
     public ResponseEntity<PostDto> getPost(@PathVariable @RequestBody String slug){
         try {
-            return new ResponseEntity<>(postService.getSinglePost(slug), HttpStatus.OK);
+            return new ResponseEntity<>(postsService.getSinglePost(slug), HttpStatus.OK);
         } catch (PostNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
@@ -42,7 +42,7 @@ public class PostController {
             @RequestParam(defaultValue = "5") int size
     ) {
         try {
-            Page<Post> posts = postService.getCategoryPosts(categoryName, page, size);
+            Page<Post> posts = postsService.getCategoryPosts(categoryName, page, size);
             return new ResponseEntity<>(new PostListResponse(posts), HttpStatus.OK);
         }
         catch (PostNotFoundException e) {
