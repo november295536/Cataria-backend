@@ -151,18 +151,42 @@ public class PostsService {
     private void setCategory(PostDto postDto, Post post) {
         String categoryName = postDto.getCategory();
         if (categoryName != null && !categoryName.isEmpty()) {
-            Category category = categoryRepository.findByName(categoryName).orElse(new Category());
-            category.setName(categoryName);
-            post.setCategory(category);
+            Category category = categoryRepository.findByName(categoryName).orElse(new Category(categoryName));
+            category.addPostToPostList(post);
             return;
         }
-        post.setCategory(null);
+        if(post.getCategory() == null) return;
+        Category category = post.getCategory();
+        category.removePostFromPostList(post);
     }
 
     private void setTags(PostDto postDto, Post post) {
         List<String> tagNames = postDto.getTags();
-        Set<Tag> tags = getTagsFromTagNameList(tagNames);
-        post.setTags(tags);
+        Set<Tag> newTags = getTagsFromTagNameList(tagNames);
+        Set<Tag> originalTags = post.getTags();
+        if (originalTags == null && newTags == null) return;
+
+        if (newTags == null) {
+            newTags = new HashSet<>();
+        }
+
+        if (originalTags == null) {
+            originalTags = new HashSet<>();
+        }
+
+        Set<Tag> addTags = new HashSet<>(newTags);
+        addTags.removeAll(originalTags);
+
+        Set<Tag> removeTags = new HashSet<>(originalTags);
+        removeTags.removeAll(newTags);
+
+        for (Tag tag : addTags) {
+            tag.addPostToPostList(post);
+        }
+
+        for (Tag tag : removeTags) {
+            tag.removePostFromPostList(post);
+        }
     }
 
     private Set<Tag> getTagsFromTagNameList(List<String> tagNames) {
@@ -170,8 +194,7 @@ public class PostsService {
         Set<Tag> tags = new HashSet<>();
         for (String tagName : tagNames) {
             Tag tag = tagRepository.findByName(tagName)
-                    .orElse(new Tag());
-            tag.setName(tagName);
+                    .orElse(new Tag(tagName));
             tags.add(tag);
         }
         return tags;
