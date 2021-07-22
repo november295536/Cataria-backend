@@ -1,6 +1,5 @@
 package space.nov29.cataria.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,11 @@ import space.nov29.cataria.service.PostsService;
 @RequestMapping("/posts")
 public class GuestController {
 
-    @Autowired
-    private PostsService postsService;
+    private final PostsService postsService;
+
+    public GuestController(PostsService postsService) {
+        this.postsService = postsService;
+    }
 
     @GetMapping
     public PostListResponse getPosts(

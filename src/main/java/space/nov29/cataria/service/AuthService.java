@@ -1,7 +1,6 @@
 package space.nov29.cataria.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,14 +17,17 @@ import space.nov29.cataria.repository.UserRespository;
 @Slf4j
 public class AuthService {
 
-    @Autowired
-    private UserRespository userRespository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final UserRespository userRespository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
+
+    public AuthService(UserRespository userRespository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
+        this.userRespository = userRespository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
+    }
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();

@@ -1,7 +1,6 @@
 package space.nov29.cataria.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +17,11 @@ import java.util.Collections;
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserRespository userRespository;
+    private final UserRespository userRespository;
+
+    public UserDetailsServiceImpl(UserRespository userRespository) {
+        this.userRespository = userRespository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,7 +1,6 @@
 package space.nov29.cataria.controller.admin;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,11 @@ import java.util.List;
 @RequestMapping("/admin")
 public class PostsManagementController {
 
-    @Autowired
-    private PostsService postsService;
+    private final PostsService postsService;
+
+    public PostsManagementController(PostsService postsService) {
+        this.postsService = postsService;
+    }
 
     @GetMapping("/posts")
     public PostListResponse showAllPost(

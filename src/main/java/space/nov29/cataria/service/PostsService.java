@@ -1,7 +1,6 @@
 package space.nov29.cataria.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +30,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostsService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
+
+    public PostsService(PostRepository postRepository, CategoryRepository categoryRepository, TagRepository tagRepository) {
+        this.postRepository = postRepository;
+        this.categoryRepository = categoryRepository;
+        this.tagRepository = tagRepository;
+    }
 
     public void createPost(PostDto postDto) {
         Post post = createPostFromPostDta(postDto);

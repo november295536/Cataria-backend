@@ -1,7 +1,6 @@
 package space.nov29.cataria.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,11 +15,16 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class AssetsService {
-    @Autowired
-    private S3Client s3Client;
+    private final S3Client s3Client;
+
     @Value("${cataria.config.s3.bucketName}")
     private String bucketName;
+
     private String filePrefix = "assets/";
+
+    public AssetsService(S3Client s3Client) {
+        this.s3Client = s3Client;
+    }
 
     public String put(MultipartFile file) throws IOException {
         if (file.isEmpty()) {

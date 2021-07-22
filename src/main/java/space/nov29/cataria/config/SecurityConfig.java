@@ -1,6 +1,5 @@
 package space.nov29.cataria.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,11 +21,15 @@ import space.nov29.cataria.service.UserDetailsServiceImpl;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private final AuthEntryPointJwt unauthorizedHandler;
+
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler, JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.userDetailsService = userDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -34,10 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
+    public final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/posts/**").permitAll()
                 .anyRequest()
                 .authenticated();
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

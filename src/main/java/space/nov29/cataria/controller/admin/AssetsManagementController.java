@@ -1,6 +1,5 @@
 package space.nov29.cataria.controller.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +14,11 @@ import space.nov29.cataria.service.AssetsService;
 @RequestMapping("/admin")
 public class AssetsManagementController {
 
-    @Autowired
-    private AssetsService assetsService;
+    private final AssetsService assetsService;
+
+    public AssetsManagementController(AssetsService assetsService) {
+        this.assetsService = assetsService;
+    }
 
     @PostMapping("/assets")
     public ResponseEntity uploadAssets(@RequestParam("file") MultipartFile file) {
