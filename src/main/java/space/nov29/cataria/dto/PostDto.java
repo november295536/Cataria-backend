@@ -33,7 +33,6 @@ public class PostDto {
         this.lastEditTime = post.getLastEditTime();
         this.createTime = post.getCreateTime();
         this.publishedTime = post.getPublishedTime();
-        if (post.getCategory() == null) this.category = null;
         this.category = post.getCategory() != null ? post.getCategory().getName() : null;
         this.tags = new ArrayList<>(post.getTags()).
                 stream()
