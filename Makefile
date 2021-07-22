@@ -9,3 +9,6 @@ production.rollback:
 	ssh nov29 '. ~/.zshrc; sh /Cataria/rollback.sh'
 
 production.build-and-deploy: production.build production.deploy
+
+develop.test:
+	./gradlew clean test
