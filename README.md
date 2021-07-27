@@ -23,6 +23,7 @@
 - [ ] jwt token auto renew
 - [ ] 輸入檢查
 - [ ] 完善錯誤處理
+- [ ] README 新增「部屬」章節
 
 ## 目錄結構
 使用 Java Spring Boot 並不像前端使用 Nuxt 一樣有一個規範好的目錄結構，基本上都是自己來，下面主要解釋 src/main 目錄底下的結構。
@@ -137,7 +138,19 @@ category(資源)
 | GET    | /admin/tags                    | 取得所有 tag 的狀態               | ❌  |
 
 ## 設計
-[](/.github/assets/backend-structure.svg)
-[](./.github/assets/production-environment.svg)
+### 後端結構設計
+![](.github/assets/backend-structure.png)
+後端分成三層結構，Controller 層、Service 層和 Module 層。
 
-## 部屬方式
+1. Controller 層: 負責對請求進行分類，根據使用者的身份分成訪客和管理員兩類，再加上不屬於兩者的身份驗證類。作為整個應用程式的入口，Controller 層的設計是會資料進行格式轉換，隔絕外部的請求以及內部流通的資料格式，降低耦合，除此之外還會進行請求的錯誤處理。Controller 基本上部處理業務邏輯，上述動作執行完之後就會把業務委託給 Service 層。
+   
+2. Service 層: 負責最主要的業務邏輯，大部分的功能實現都寫在這邊，在完成 controller 委託的任務之後會返回相應的結果。在需要對資料進行互動的時候，則會進一步的把資料庫操作的部份交給 Module 層。
+
+3. Module 層: 負責對資料庫的操作，並把資料庫內的資料映射到 java 的類上。對 service 層隱藏資料庫內的實現，降低耦合。
+
+### production 環境設計
+![](.github/assets/production-environment.png)
+貓薄荷這個專案是採用前後端分離的架構，圖片中除了 S3 是外部服務之外，都可以分開部屬到不同的機器上，Nginx 會負責對請求進行代理的工作，根據 uri 去轉發，前端伺服器會負責畫面顯示的工作，並在需要 SSR 的時候對後端伺服器做出請求，後端只負責資料處理，並根據 API 的規定返回相應的資料。由於目前我採用的是單伺服器的 production 環境，所以前端會直接對在同一台機器上的後端發送請求。
+
+Nginx 會代理對於已經上傳到 S3 的資源請求，並不會經過前端或後端服務，可以降低伺服器的負擔。
+
