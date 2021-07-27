@@ -16,17 +16,9 @@
 
 ## 後端 TODO
 - [X] 串接 AWS S3 作為圖片服務器。
-
-  圖片存儲有很多種方法，第一個方案是存在 DB 裡面，第二個方案是存在伺服器之中，然後當成靜態資源存取，第三個是使用外部資源像是 AWS S3 等服務。
-
-  第一個方案除非有特殊的需求，不然一般不會這樣做，因為 DB 是一個比 OS 的檔案系統操作成本更昂貴的系統，不管是圖片的存入還是訪問，都需要做額外的工作，而且這樣會加重 DB 的負擔。
-
-  第二個方案的優勢在於我們有很多方案可以加速檔案系統的訪問，並且可以用 nginx 或其他類型的服務器來處理這些圖片的訪問。
-
-  第三個方案是使用外部的儲存資源，考量到以後如果需要進行遷移等行為的時候可以更加方便的離開原本的使用機器環境，使用一個第三方服務來存我的圖片資料是個不錯的選擇。
--[X] github action auto deploy
-- [ ] testing
-- [ ] 實作文章分類列表(category、tag)相關的資料 API
+- [X] github action auto deploy
+- [X] testing
+- [ ] 重新設計並完成文章分類列表(category、tag)相關的資料 API
 - [ ] 重構管理員註冊及使用者管理模塊
 - [ ] jwt token auto renew
 - [ ] 輸入檢查
@@ -35,19 +27,19 @@
 ## 目錄結構
 使用 Java Spring Boot 並不像前端使用 Nuxt 一樣有一個規範好的目錄結構，基本上都是自己來，下面主要解釋 src/main 目錄底下的結構。
 ```
-src/main
-├── java.space.nov29.cataria
-│   ├── config
-│   ├── controller
-│   ├── dto
-│   ├── exception
-│   ├── filter
-│   ├── model
-│   ├── repository
-│   └── service
-│   
-└── resources
-
+src
+├── main
+│   ├── java.space.nov29.cataria
+│   │   ├── config
+│   │   ├── controller
+│   │   ├── dto
+│   │   ├── exception
+│   │   ├── filter
+│   │   ├── model
+│   │   ├── repository
+│   │   └── service
+│   └── resources
+└── test
 ```
 1. config:
 
@@ -84,6 +76,10 @@ src/main
 9. resources
 
     這裡存放的是一些資源類的文件，像是存儲專案設定的 application.properties 文件。Github 上只提供了一個範本作為參考，使用者在運行專案的時候應該根據自己的環境去撰寫相關的設定。
+
+10. test
+
+    所以的測試都寫在這邊，裡面的結構和src/main裡面一樣。
 ## RESTful API 定義
 決定 API 的時候，我自己的作法是先思考我有哪些資源，並且需要支援那些操作，之後再根據這些資願把功能轉換為一系列的 API endpoint。
 所以首先來看資源列表以及支援的操作:
@@ -141,5 +137,7 @@ category(資源)
 | GET    | /admin/tags                    | 取得所有 tag 的狀態               | ❌  |
 
 ## 設計
+[](/.github/assets/backend-structure.svg)
+[](./.github/assets/production-environment.svg)
 
 ## 部屬方式
